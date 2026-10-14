@@ -11,4 +11,7 @@ public interface ClienteRepo extends JpaRepository<Cliente, Long> {
     //LISTAR CLIENTES PARA MOSTRAR EN EL FRONT
     @Query(value = "{CALL sp_listar_Clientes()}", nativeQuery = true)
     List<clienteReporte> listaClientes();
+
+    @Query("SELECT c.id AS id, CONCAT(c.nombres, ' ', c.apellidos) AS nombre FROM Cliente c ORDER BY c.id")
+    List<ClienteOpcion> listarOpciones();
 }

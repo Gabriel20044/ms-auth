@@ -1,0 +1,17 @@
+<header class="topbar">
+  <span class="brand">📦 LogiSpeed Tracking</span>
+  @if (auth.isLoggedIn()) {
+    <nav class="nav">
+      <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
+      <a routerLink="/paquetes" routerLinkActive="active">Paquetes</a>
+    </nav>
+    <div class="user-box">
+      <span class="user">{{ auth.currentUser() }}</span>
+      <button class="btn-link" (click)="logout()">Salir</button>
+    </div>
+  }
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>

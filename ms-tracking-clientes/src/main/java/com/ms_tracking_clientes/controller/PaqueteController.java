@@ -37,6 +37,17 @@ public class PaqueteController {
         return ResponseEntity.ok(pServicio.buscarSegunId(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Paquete> editarPaquete(@PathVariable Long id, @RequestBody PaqueteRequestDTO dto){
+        return ResponseEntity.ok(pServicio.editarPaquete(id, dto.getDescripcion(), dto.getPesoKG()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarPaquete(@PathVariable Long id){
+        pServicio.eliminarPaquete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     //Listar paquetes con el reporte general. Es un metodo GET que usa el store procedure que se hizo para el listado
 
     @GetMapping

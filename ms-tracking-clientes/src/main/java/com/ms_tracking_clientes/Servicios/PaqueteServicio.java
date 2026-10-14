@@ -43,6 +43,18 @@ public Paquete buscarSegunId(Long id){
             .orElseThrow(() -> new RuntimeException("Paquete no valido " + id));
 }
 
+public Paquete editarPaquete(Long id, String descripcion, BigDecimal pesoKG){
+    Paquete paquete = repoPaquete.findById(id)
+            .orElseThrow(() -> new RuntimeException("Paquete no valido " + id));
+    paquete.setDescripcion(descripcion);
+    paquete.setPesoKG(pesoKG);
+    return repoPaquete.save(paquete);
+}
+
+public void eliminarPaquete(Long id){
+    repoPaquete.deleteById(id);
+}
+
 //REPORTES
     //REPORTE CON PAQUETE Y CLIENTES, EL REPORTE QUE SE VE EN EL FRONT LISTA
     public List<PaqueteReporte> listarPaquetes(){

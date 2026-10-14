@@ -1,6 +1,7 @@
 package com.ms_tracking_clientes.Servicios;
 
 import com.ms_tracking_clientes.Models.Cliente;
+import com.ms_tracking_clientes.Repositorios.ClienteOpcion;
 import com.ms_tracking_clientes.Repositorios.ClienteRepo;
 import com.ms_tracking_clientes.Repositorios.clienteReporte;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,27 @@ private ClienteRepo repoCliente;
         return repoCliente.listaClientes();
     }
 
+    public List<ClienteOpcion> listarOpciones(){
+        return repoCliente.listarOpciones();
+    }
+
     //obtener
     public Optional <Cliente> obtenerCliente(Long idCliente){
         return repoCliente.findById(idCliente);
+    }
+
+    public Cliente editarCliente(Long idCliente, Cliente datos){
+        Cliente existente = repoCliente.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("Cliente no hallado " + idCliente));
+        existente.setTipoCliente(datos.getTipoCliente());
+        existente.setTipoDoc(datos.getTipoDoc());
+        existente.setDocumento(datos.getDocumento());
+        existente.setNombres(datos.getNombres());
+        existente.setApellidos(datos.getApellidos());
+        existente.setTelefono(datos.getTelefono());
+        existente.setCorreo(datos.getCorreo());
+        existente.setDireccion(datos.getDireccion());
+        return repoCliente.save(existente);
     }
 
     public void borrarCiente(Long idCliente){

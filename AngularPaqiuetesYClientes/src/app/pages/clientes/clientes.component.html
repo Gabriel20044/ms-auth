@@ -1,0 +1,112 @@
+<h1>Clientes</h1>
+
+@if (msgGeneral()) { <div class="msg info">{{ msgGeneral() }}</div> }
+
+<section class="card">
+  <h2>Listar clientes</h2>
+  <button (click)="listar()" [disabled]="cargandoLista()">
+    {{ cargandoLista() ? 'Cargando…' : 'Actualizar' }}
+  </button>
+
+  @if (lista().length) {
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th><th>Tipo persona</th><th>Tipo doc.</th>
+          <th>Documento</th><th>Teléfono</th><th>Correo</th><th>Dirección</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of lista(); track $index) {
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.tipoPersona }}</td>
+            <td>{{ c.tipoDocumento }}</td>
+            <td>{{ c.documento }}</td>
+            <td>{{ c.telefono }}</td>
+            <td>{{ c.correo }}</td>
+            <td>{{ c.direccion }}</td>
+            <td class="acciones">
+              <button type="button" (click)="editarFila(c)">Editar</button>
+              <button type="button" class="peligro" (click)="eliminar(c.id)">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else if (!cargandoLista()) {
+    <p class="vacio">Sin clientes registrados.</p>
+  }
+</section>
+
+@if (editando(); as c) {
+  <section class="card">
+    <h2>Editar cliente (Id {{ c.id }})</h2>
+
+    @if (msgEditar()) { <p class="msg error">{{ msgEditar() }}</p> }
+
+    <form class="form" (ngSubmit)="guardarEdicion()">
+      <div class="row">
+        <label>Tipo de cliente
+          <select name="e_tipoCliente" [(ngModel)]="c.tipoCliente">
+            @for (t of tiposCliente; track t) { <option [value]="t">{{ t }}</option> }
+          </select>
+        </label>
+        <label>Tipo de documento
+          <select name="e_tipoDoc" [(ngModel)]="c.tipoDoc">
+            @for (t of tiposDocumento; track t) { <option [value]="t">{{ t }}</option> }
+          </select>
+        </label>
+        <label>Documento <input name="e_documento" [(ngModel)]="c.documento" required /></label>
+      </div>
+      <div class="row">
+        <label>Nombres <input name="e_nombres" [(ngModel)]="c.nombres" required /></label>
+        <label>Apellidos <input name="e_apellidos" [(ngModel)]="c.apellidos" required /></label>
+        <label>Teléfono <input name="e_telefono" [(ngModel)]="c.telefono" required /></label>
+      </div>
+      <div class="row">
+        <label>Correo <input name="e_correo" [(ngModel)]="c.correo" /></label>
+        <label>Dirección <input name="e_direccion" [(ngModel)]="c.direccion" /></label>
+      </div>
+      <div class="row">
+        <button type="submit">Guardar cambios</button>
+        <button type="button" class="secundario" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </form>
+  </section>
+}
+
+<section class="card">
+  <h2>Crear cliente</h2>
+  <form class="form" (ngSubmit)="crear()">
+    <div class="row">
+      <label>Tipo de cliente
+        <select name="c_tipoCliente" [(ngModel)]="nuevo.tipoCliente">
+          @for (t of tiposCliente; track t) { <option [value]="t">{{ t }}</option> }
+        </select>
+      </label>
+      <label>Tipo de documento
+        <select name="c_tipoDoc" [(ngModel)]="nuevo.tipoDoc">
+          @for (t of tiposDocumento; track t) { <option [value]="t">{{ t }}</option> }
+        </select>
+      </label>
+      <label>Documento
+        <input name="c_documento" [(ngModel)]="nuevo.documento" required />
+      </label>
+    </div>
+    <div class="row">
+      <label>Nombres <input name="c_nombres" [(ngModel)]="nuevo.nombres" required /></label>
+      <label>Apellidos <input name="c_apellidos" [(ngModel)]="nuevo.apellidos" required /></label>
+      <label>Teléfono <input name="c_telefono" [(ngModel)]="nuevo.telefono" required /></label>
+    </div>
+    <div class="row">
+      <label>Correo <input name="c_correo" [(ngModel)]="nuevo.correo" /></label>
+      <label>Dirección <input name="c_direccion" [(ngModel)]="nuevo.direccion" /></label>
+    </div>
+    @if (msgCrear()) { <p class="msg" [class.ok]="!msgCrear()!.startsWith('Error')" [class.error]="msgCrear()!.startsWith('Error')">{{ msgCrear() }}</p> }
+    <button type="submit">Crear cliente</button>
+  </form>
+</section>

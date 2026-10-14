@@ -180,9 +180,11 @@ select
 	where c.id = 1
 
 	-- PROCEDURE PARA LISTAR CLIENTES Y PONERLO ASI EN EL FRONT
+drop procedure if exists sp_listar_Clientes;
 create procedure sp_listar_Clientes()
 begin
 	select 
+	id,
 	concat(nombres,  ' ',  apellidos) as Nombre,
 	tipo_persona, 
 	tipo_documento, 
