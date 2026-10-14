@@ -1,7 +1,7 @@
 create database bd_logispeed_ClienteyPaquetes
 use bd_logispeed_ClienteyPaquetes
- -- drop table Clientes
- -- drop table paquetes
+
+-- INSERTS
 
 INSERT INTO clientes
     (tipo_persona, tipo_documento, documento, nombres, apellidos, telefono, correo, direccion)
@@ -50,21 +50,11 @@ VALUES
      
 
 
-
+-- PRUEBAS PARA SELECTS
 select * from clientes
 select * from PAQUETES
 
-truncate table clientes
-Truncate table paquetes
-
-show create table paquetes
-show create function funcion_sumar_dias_habiles
-SHOW PROCEDURE STATUS WHERE Db = 'bd_logispeed_ClienteyPaquetes';
-
-update paquetes
-set fecha_entrega_estimada = '2026-10-09'
-where id = 5
--- PROCEDURES PARA VERIFICAR SI UN PAQAUETE ESTA EN PROCESO O ENTREGADO
+-- PROCEDURES PARA VERIFICAR SI UN PAQUETE ESTA EN PROCESO O ENTREGADO
 
 -- EL PAQUETE ESTA EN DESPACHO
 create procedure sp_registrar_paquete(
@@ -91,10 +81,11 @@ begin
 	where id = p_id_paquete;
 end
 
+
+
 -- PARA CAMBIAR LOS CAMPOS fecha_salida_pedido, fecha_entrega_estimada y fecha_entrega a EN PROGRESO EN CASO LOS PEDIDOS NO SE ENCUENTREN EN RUTA O NO SE ENTREGUEN Y MOSTRAR EN EL FRONT
 
-
-
+-- LISTA CON LOS PAQUETES Y SU RESPECTIVO CLIENTE
 create procedure sp_paquetes_reporte()
 begin
 	select 
@@ -142,42 +133,7 @@ CALL sp_registrar_entrega(1, '2026-10-15');
 -- 4) Ver cómo quedó en el reporte
 CALL sp_paquetes_reporte();
 
-call sp_paquetes_reporte()
 
-select 
-	p.id,
-	p.descripcion,
-	p.codigo_rastreo,
-	p.peso_en_kg,
-	CONCAT(c.nombres, ' ', c.apellidos) AS cliente,
-	p.fecha_pedido,
-	
-	-- EN CASO EL PAQUETE YA SE ENCUENTRA EN RUTA.
-	CASE
-           WHEN p.fecha_salida_pedido IS NOT NULL THEN CAST(p.fecha_salida_pedido AS CHAR)
-           ELSE 'En Progreso'
-    END AS fecha_salida_pedido,
-	
-		-- en caso el paquete ya tenga fecha de salida y aun se encuentre en ruta pero aun no llega
-	case
-        when p.fecha_entrega_estimada is null then 'En Progreso'
-        when p.fecha_entrega is not null and p.fecha_entrega > p.fecha_entrega_estimada
-                 then concat(cast(p.fecha_entrega_estimada as char), ' - PEDIDO CON RETRASO')
-            else cast(p.fecha_entrega_estimada as char)
-        end as fecha_entrega_estimada,
-	
-		
-		-- en caso ya se entrego el paquete.
-	case
-			when p.fecha_entrega is not null then cast(p.fecha_entrega as char)
-			else 'En Progreso'
-	end as fecha_entrega,
-	p.estado_paquete
-	
-	from paquetes p 
-	inner join clientes c 
-	on p.id_cliente = c.id
-	where c.id = 1
 
 	-- PROCEDURE PARA LISTAR CLIENTES Y PONERLO ASI EN EL FRONT
 drop procedure if exists sp_listar_Clientes;
@@ -237,8 +193,13 @@ select
 	on p.id_cliente = c.id
 	where c.id = p_id_cliente;
  end
+ -- PRUEBA
+ call sp_listar_Paquetes_Segun_Cliente(2)
  
- 	
+ 
+ 
+ 	-- LISTAR PAQUETES SEGUN ESTADO
+ 
   create procedure sp_listar_Paquetes_Segun_Estado(
  in p_estado_paquete varchar(20)
  )
@@ -274,10 +235,5 @@ select
 	where p.estado_paquete = p_estado_paquete;
 	end
  
-	
- 
-  call sp_listar_Paquetes_Segun_Cliente(2)
- 
+ -- PRUEBA
   call sp_listar_Paquetes_Segun_Estado('ENTREGADO')
---  drop procedure sp_listar_Paquetes_Segun_Estado
--- drop procedure sp_listar_Pedidos_Segun_Cliente
