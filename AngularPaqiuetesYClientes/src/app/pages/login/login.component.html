@@ -1,0 +1,26 @@
+<section class="card login-card">
+  <h2>Iniciar sesión</h2>
+  <p class="endpoint">POST <code>/login</code> · ms-tracking-clientes</p>
+
+  <form (ngSubmit)="enviar()" class="form">
+    <label>
+      Usuario
+      <input name="username" [(ngModel)]="username" autocomplete="username" />
+    </label>
+    <label>
+      Contraseña
+      <input type="password" name="password" [(ngModel)]="password" autocomplete="current-password" />
+    </label>
+
+    @if (error()) { <p class="msg error">{{ error() }}</p> }
+    @if (exito()) { <p class="msg ok">{{ exito() }}</p> }
+
+    <button type="submit" [disabled]="loading()">
+      {{ loading() ? 'Entrando…' : 'Ingresar' }}
+    </button>
+  </form>
+
+  <p class="hint">
+    Credenciales del microservicio: <code>tracking_admin</code> / <code>Tracking2026*</code>
+  </p>
+</section>

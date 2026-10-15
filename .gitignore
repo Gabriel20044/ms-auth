@@ -1,0 +1,25 @@
+# ---- IDE / editores ----
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+
+# ---- Maven (targets de build) ----
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+mvnw-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
+
+# ---- Logs / temporales ----
+*.log
+*.tmp
+HELP.md
+
+# ---- SO ----
+.DS_Store
+Thumbs.db

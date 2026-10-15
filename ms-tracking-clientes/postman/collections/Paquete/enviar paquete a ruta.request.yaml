@@ -1,0 +1,10 @@
+$kind: http-request
+url: http://localhost:8082/paquete/8/envioARuta?fecha=2026-10-14
+method: POST
+queryParams:
+  fecha: 2026-10-14
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1ef0}}"
+order: 5806
