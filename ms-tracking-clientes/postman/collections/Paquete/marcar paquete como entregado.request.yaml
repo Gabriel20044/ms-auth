@@ -1,0 +1,10 @@
+$kind: http-request
+url: http://localhost:8082/paquete/8/paqueteEntregado?fecha=2026-10-17
+method: PATCH
+queryParams:
+  fecha: 2026-10-17
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1ef0}}"
+order: 4000

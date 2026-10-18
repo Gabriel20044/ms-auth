@@ -1,0 +1,11 @@
+$kind: http-request
+url: http://localhost:8082/paquete/2
+method: GET
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1ef0}}"
+order: 6000

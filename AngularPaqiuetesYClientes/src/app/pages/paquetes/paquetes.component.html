@@ -1,0 +1,185 @@
+<h1>Paquetes</h1>
+
+@if (msgGeneral()) { <div class="msg info">{{ msgGeneral() }}</div> }
+
+<!-- 1. LISTAR TODOS LOS PAQUETES -->
+<section class="card">
+  <!-- Contenedor alineado horizontalmente -->
+  <div class="card-header">
+    <h2>Listar todos los paquetes</h2>
+    <button type="button" class="btn-icon-action btn-actualizar" (click)="listarTodos()" [disabled]="cargandoLista()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.65-5.65"></path>
+      </svg>
+      <span class="btn-text">{{ cargandoLista() ? 'Cargando…' : 'Actualizar' }}</span>
+    </button>
+  </div>
+
+  @if (lista().length) {
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>CÓDIGO</th>
+      <th>DESCRIPCIÓN</th>
+      <th>PESO</th>
+      <th>CLIENTE</th>
+      <th>ESTADO</th>
+      <th>PEDIDO</th>
+      <th>ENTREGA</th>
+      <th>ACCIONES</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (p of lista(); track $index) {
+    <tr>
+      <td>{{ p.id }}</td>
+      <td><code>{{ p.codigoRastreo }}</code></td>
+      <td>{{ p.descripcion }}</td>
+      <td>{{ p.pesoEnKg }} kg</td>
+      <td>{{ p.cliente }}</td>
+      <td>{{ p.estadoPaquete }}</td>
+      <td>{{ p.fechaPedido }}</td>
+      <td>{{ p.fechaEntrega || '—' }}</td>
+      <td class="acciones">
+        <div style="display: flex; gap: 6px;">
+          <!-- Botón Editar -->
+          <button type="button" class="btn-icon-action btn-editar" (click)="editarFila(p)" title="Editar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span class="btn-text">Editar</span>
+          </button>
+
+          <!-- Botón Eliminar -->
+          <button type="button" class="btn-icon-action btn-eliminar" (click)="eliminar(p.id)" title="Eliminar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+            <span class="btn-text">Eliminar</span>
+          </button>
+        </div>
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  } @else if (!cargandoLista()) {
+  <p class="vacio">Sin paquetes registrados.</p>
+  }
+</section>
+
+<!-- EDITAR PAQUETE -->
+@if (editando(); as e) {
+<section class="card">
+  <h2>Editar paquete (Id {{ e.id }})</h2>
+
+  @if (msgEditar()) { <p class="msg error">{{ msgEditar() }}</p> }
+
+  <form class="form" (ngSubmit)="guardarEdicion()">
+    <div class="row">
+      <label>Descripción
+        <input name="e_desc" [(ngModel)]="e.descripcion" required />
+      </label>
+      <label>Peso (KG)
+        <input type="number" step="0.01" name="e_peso" [(ngModel)]="e.pesoKG" required />
+      </label>
+    </div>
+    <div class="row">
+      <button type="submit">Guardar cambios</button>
+      <button type="button" class="secundario" (click)="cancelarEdicion()">Cancelar</button>
+    </div>
+  </form>
+</section>
+}
+
+<!-- 2. REGISTRAR PAQUETE -->
+<section class="card">
+  <h2>Registrar paquete</h2>
+  <form class="form" (ngSubmit)="crear()">
+    <div class="row">
+      <label>Descripción
+        <input name="reg_desc" [(ngModel)]="nuevo.descripcion" required />
+      </label>
+      <label>Peso (KG)
+        <input type="number" step="0.01" name="reg_peso" [(ngModel)]="nuevo.pesoKG" required />
+      </label>
+      <label>Cliente
+        <select name="reg_cliente" [(ngModel)]="clienteSeleccionado" required>
+          <option value="">— Seleccione un cliente —</option>
+          @for (c of clientes(); track c.id) {
+          <option [value]="c.id">{{ c.nombre }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    @if (msgCrear()) { <p class="msg" [class.ok]="!msgCrear()!.startsWith('Error')" [class.error]="msgCrear()!.startsWith('Error')">{{ msgCrear() }}</p> }
+    <button type="submit">Registrar</button>
+  </form>
+</section>
+
+<!-- 3. PAQUETES POR CLIENTE -->
+<section class="card">
+  <h2>Paquetes por cliente</h2>
+  <div class="form">
+    <div class="row">
+      <label>Cliente
+        <select name="search_cliente" [(ngModel)]="idCliente">
+          <option value="">— Seleccione un cliente —</option>
+          @for (c of clientes(); track c.id) {
+          <option [value]="c.id">{{ c.nombre }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    <button type="button" (click)="listarPorCliente()">Buscar</button>
+  </div>
+</section>
+
+<!-- 4. ENVIAR PAQUETE A RUTA -->
+<section class="card">
+  <h2>Enviar paquete a ruta</h2>
+  <form class="form" (ngSubmit)="enviarARuta()">
+    <div class="row">
+      <label>Paquete (código de rastreo)
+        <select name="ruta_paquete" [(ngModel)]="idEnvio" required>
+          <option value="">— Seleccione un paquete —</option>
+          @for (p of lista(); track p.id) {
+          <option [value]="p.id">{{ p.codigoRastreo }} - {{ p.descripcion }}</option>
+          }
+        </select>
+      </label>
+      <label>Fecha de envío
+        <input type="date" name="ruta_fecha" [(ngModel)]="fechaEnvio" required />
+      </label>
+    </div>
+    @if (msgEnvio()) { <p class="msg" [class.ok]="!msgEnvio()!.startsWith('Error')" [class.error]="msgEnvio()!.startsWith('Error')">{{ msgEnvio() }}</p> }
+    <button type="submit">Enviar a ruta</button>
+  </form>
+</section>
+
+<!-- 5. MARCAR PAQUETE ENTREGADO -->
+<section class="card">
+  <h2>Marcar paquete entregado</h2>
+  <form class="form" (ngSubmit)="marcarEntregado()">
+    <div class="row">
+      <label>Paquete (código de rastreo)
+        <select name="entrega_paquete" [(ngModel)]="idEntrega" required>
+          <option value="">— Seleccione un paquete —</option>
+          @for (p of lista(); track p.id) {
+          <option [value]="p.id">{{ p.codigoRastreo }} - {{ p.descripcion }}</option>
+          }
+        </select>
+      </label>
+      <label>Fecha de entrega
+        <input type="date" name="entrega_fecha" [(ngModel)]="fechaEntrega" required />
+      </label>
+    </div>
+    @if (msgEntrega()) { <p class="msg" [class.ok]="!msgEntrega()!.startsWith('Error')" [class.error]="msgEntrega()!.startsWith('Error')">{{ msgEntrega() }}</p> }
+    <button type="submit">Marcar entregado</button>
+  </form>
+</section>

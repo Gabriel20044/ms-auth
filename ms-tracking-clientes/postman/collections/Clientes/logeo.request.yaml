@@ -1,0 +1,17 @@
+$kind: http-request
+url: |-
+  
+  http://localhost:8082/login
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"username\": \"tracking_admin\",\r
+
+    \  \"password\": \"Tracking2026*\"\r
+
+    }"
+order: 2000

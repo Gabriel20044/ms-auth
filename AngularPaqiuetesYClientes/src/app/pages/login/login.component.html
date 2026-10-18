@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-box">
+
+    <div class="login-form-side">
+      <div class="login-header">
+        <h2>Ingresa tu Usuario</h2>
+      </div>
+
+      <form (ngSubmit)="enviar()" class="form">
+        <div class="input-group">
+          <label>Usuario</label>
+          <div class="input-field">
+            <input type="text" name="username" [(ngModel)]="username" autocomplete="username" placeholder="" />
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Contraseña</label>
+          <div class="input-field">
+            <input type="password" name="password" [(ngModel)]="password" autocomplete="current-password" placeholder="" />
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" name="remember" />
+            Mantener Sesión
+          </label>
+        </div>
+
+        @if (error()) { <div class="msg error">{{ error() }}</div> }
+        @if (exito()) { <div class="msg ok">{{ exito() }}</div> }
+
+        <button type="submit" class="btn-submit" [disabled]="loading()">
+          {{ loading() ? 'Entrando...' : 'Ingresar' }}
+        </button>
+      </form>
+    </div>
+
+    <div class="login-banner-side">
+      <div class="gradient-overlay">
+        <div class="banner-content">
+          <img src="/logo.png" alt="LogiSpeed Logo" class="banner-logo" />
+          <div class="divider-line"></div>
+          <p class="banner-text">"Control total de tus envíos, en tiempo real y sin interrupciones."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

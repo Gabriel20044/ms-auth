@@ -1,0 +1,29 @@
+$kind: http-request
+url: http://localhost:8082/clientes
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"tipoCliente\": \"PERSONA_NATURAL\",\r
+
+    \  \"tipoDoc\": \"DNI\",\r
+
+    \  \"documento\": \"70012345\",\r
+
+    \  \"nombres\": \"Juan\",\r
+
+    \  \"apellidos\": \"Perez Quispe\",\r
+
+    \  \"telefono\": \"987654321\",\r
+
+    \  \"correo\": \"juan.perez@mail.com\",\r
+
+    \  \"direccion\": \"Av. Los Olivos 123, Lima\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 3000
