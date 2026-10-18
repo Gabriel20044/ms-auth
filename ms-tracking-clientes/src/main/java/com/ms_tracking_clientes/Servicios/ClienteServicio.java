@@ -16,21 +16,15 @@ public class ClienteServicio {
     @Autowired
 private ClienteRepo repoCliente;
 
-    //guardar cliente
     public Cliente guardarCliente(Cliente cliente){
         return repoCliente.save(cliente);
     }
-
-    //listar cliente, aca no se va a usar el clasico select, se va a usar el stored procedure
     public List<clienteReporte> listarClientes(){
         return repoCliente.listaClientes();
     }
-
     public List<ClienteOpcion> listarOpciones(){
         return repoCliente.listarOpciones();
     }
-
-    //obtener
     public Optional <Cliente> obtenerCliente(Long idCliente){
         return repoCliente.findById(idCliente);
     }

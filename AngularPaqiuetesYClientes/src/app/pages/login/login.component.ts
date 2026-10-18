@@ -5,6 +5,7 @@ import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -24,7 +25,7 @@ export class LoginComponent {
     this.exito.set(null);
 
     if (!this.username || !this.password) {
-      this.error.set('Ingresa usuario y contraseña.');
+      this.error.set('Por favor, ingresa usuario y contraseña.');
       return;
     }
 
@@ -32,12 +33,14 @@ export class LoginComponent {
     this.auth.login({ username: this.username, password: this.password }).subscribe({
       next: (res) => {
         this.loading.set(false);
-        this.exito.set(res.mensaje ?? 'Bienvenido ' + res.username);
-        this.router.navigate(['/clientes']);
+        this.exito.set(res.mensaje ?? 'Acceso correcto. Redirigiendo...');
+        setTimeout(() => {
+          this.router.navigate(['/clientes']);
+        }, 600);
       },
       error: (err: any) => {
         this.loading.set(false);
-        this.error.set(typeof err?.error === 'string' ? err.error : 'Credenciales invalidas.');
+        this.error.set(typeof err?.error === 'string' ? err.error : 'Credenciales inválidas.');
       }
     });
   }

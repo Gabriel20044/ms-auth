@@ -35,7 +35,6 @@ public class AuthService {
             throw new RuntimeException("Credenciales invalidas: contrasena incorrecta");
         }
 
-        // La autoridad viene como "ROLE_ADMIN"; se guarda el rol sin prefijo en el token
         String rol = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()

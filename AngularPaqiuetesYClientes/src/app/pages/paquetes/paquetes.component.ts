@@ -13,6 +13,7 @@ interface PaqueteEdicion {
 
 @Component({
   selector: 'app-paquetes',
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './paquetes.component.html',
   styleUrl: './paquetes.component.scss'
@@ -23,15 +24,19 @@ export class PaquetesComponent implements OnInit {
 
   readonly estados: EstadoPaquete[] = ['REGISTRADO', 'EN_TRANSITO', 'ENTREGADO'];
 
+  // Señales de carga y datos principales con sus respectivos alias para el HTML
+  readonly cargandoTodos = signal(false);
+  get cargandoLista() { return this.cargandoTodos; }
+
+  readonly todos = signal<PaqueteReporte[]>([]);
+  get lista() { return this.todos; }
+
   readonly clientes = signal<ClienteOpcion[]>([]);
 
   readonly nuevo: PaqueteRequest = { descripcion: '', pesoKG: null as unknown as number, idCliente: null as unknown as number };
   clienteSeleccionado = '';
   readonly paqueteCreado = signal<Paquete | null>(null);
   readonly msgCrear = signal<string | null>(null);
-
-  readonly todos = signal<PaqueteReporte[]>([]);
-  readonly cargandoTodos = signal(false);
 
   readonly editando = signal<PaqueteEdicion | null>(null);
   readonly msgEditar = signal<string | null>(null);

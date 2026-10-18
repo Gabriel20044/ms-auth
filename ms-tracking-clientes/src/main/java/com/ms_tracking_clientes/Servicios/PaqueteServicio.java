@@ -55,18 +55,14 @@ public void eliminarPaquete(Long id){
     repoPaquete.deleteById(id);
 }
 
-//REPORTES
-    //REPORTE CON PAQUETE Y CLIENTES, EL REPORTE QUE SE VE EN EL FRONT LISTA
     public List<PaqueteReporte> listarPaquetes(){
     return repoPaquete.listaPaquetes();
     }
 
-    //Pasquetes segun cliente
     public  List<PaqueteReporte> listaSegunCliente(Long idCliente){
     return repoPaquete.listarSegunCliente(idCliente);
     }
 
-    //SEGUN ESTADO
     public List<PaqueteReporte> listaSegunEstado(String estado){
     if (estado == null   || !estado.matches("REGISTRADO|EN_TRANSITO|ENTREGADO")){
         throw  new IllegalArgumentException("Estado no valido " + estado);
@@ -74,13 +70,10 @@ public void eliminarPaquete(Long id){
     return repoPaquete.listarSegunEstado(estado);
     }
 
-
-    //ACCIONES PARA CAMBIAR ESTADO
-        //EN CASO EL PAQUEETE YA ESTA EN RUTA.
     public  void enviarPaquete(Long idPaquete, LocalDate fechaSalida){
     repoPaquete.registrarPaquete(idPaquete, fechaSalida);
     }
-        //EN CASO YA SE ENTREGO EL PAQUETE.
+
     public void entregarPaquete(long idPaquete, LocalDate fechaEntrega){
     repoPaquete.registrarEntrega(idPaquete,fechaEntrega);
     }

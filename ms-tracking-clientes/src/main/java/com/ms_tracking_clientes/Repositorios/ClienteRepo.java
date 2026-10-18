@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ClienteRepo extends JpaRepository<Cliente, Long> {
 
-    //LISTAR CLIENTES PARA MOSTRAR EN EL FRONT
     @Query(value = "{CALL sp_listar_Clientes()}", nativeQuery = true)
     List<clienteReporte> listaClientes();
 

@@ -15,7 +15,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    // Login propio de ms-tracking-clientes (no usa ms-auth)
     @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
         try {

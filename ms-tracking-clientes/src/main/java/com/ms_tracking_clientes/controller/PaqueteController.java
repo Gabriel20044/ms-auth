@@ -24,14 +24,12 @@ public class PaqueteController {
     @Autowired
     private ClienteServicio cServicio;
 
-    //Nuevo paquete POST
     @PostMapping
     public ResponseEntity<Paquete> hacerPaquete(@RequestBody PaqueteRequestDTO dto){
         Paquete paqueteNuevo = pServicio.registrarNuevoPaquete(dto.getDescripcion(), dto.getPesoKG(), dto.getIdCliente());
         return ResponseEntity.ok(paqueteNuevo);
     }
 
-    //Obtener Segun ID GET
     @GetMapping("/{id}")
     public ResponseEntity<Paquete> buscarPaqueteSegunId(@PathVariable Long id){
         return ResponseEntity.ok(pServicio.buscarSegunId(id));
@@ -48,20 +46,16 @@ public class PaqueteController {
         return ResponseEntity.noContent().build();
     }
 
-    //Listar paquetes con el reporte general. Es un metodo GET que usa el store procedure que se hizo para el listado
-
     @GetMapping
     public ResponseEntity<List<PaqueteReporte> >listarTodosLosPaquetesConSusClientes(){
         return ResponseEntity.ok(pServicio.listarPaquetes());
     }
 
-    //Listar Paquetes Segun Cliente GET
     @GetMapping("/cliente/{idCliente}")
     public ResponseEntity<List<PaqueteReporte>>buscarPaqueteSegunCliente(@PathVariable Long idCliente){
         return  ResponseEntity.ok(pServicio.listaSegunCliente(idCliente));
     }
 
-    //Paquetes Segun estado GET
     @GetMapping("/estado/{estado}")
     public ResponseEntity<List<PaqueteReporte>>buscarPaqueteSegunEstado(@PathVariable String estado){
         return ResponseEntity.ok(pServicio.listaSegunEstado(estado));
@@ -78,6 +72,7 @@ public class PaqueteController {
 
     //Paquete Entregado PATCH
     //En postman /paquetes/{id}/entrega?fecha=2026-10-15
+
     @PatchMapping("/{id}/paqueteEntregado")
     public  ResponseEntity<String> paqueteEntregado(@PathVariable Long id, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate fecha){
         pServicio.entregarPaquete(id, fecha);

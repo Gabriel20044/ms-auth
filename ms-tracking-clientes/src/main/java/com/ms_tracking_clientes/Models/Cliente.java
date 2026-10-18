@@ -18,11 +18,11 @@ public class Cliente {
 
         @Column(name = "tipo_Persona", nullable = false)
         @Enumerated(EnumType.STRING)
-        private tipoCliente tipoCliente; //Persona Natural o Empresa
+        private tipoCliente tipoCliente;
 
         @Column( name = "tipo_documento", nullable = false)
         @Enumerated(EnumType.STRING)
-        private tipoDocumento tipoDoc; //DNI, RUC o Pasaporte
+        private tipoDocumento tipoDoc;
 
         @Column(length = 11, nullable = false)
         private String documento;

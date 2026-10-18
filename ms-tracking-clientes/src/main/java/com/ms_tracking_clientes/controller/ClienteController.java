@@ -18,13 +18,11 @@ public class ClienteController {
     @Autowired
     private ClienteServicio cServicio;
 
-    //Hacer un nuevo cliente
     @PostMapping
     public ResponseEntity<Cliente> hacerCliente(@RequestBody Cliente cliente){
         return ResponseEntity.ok(cServicio.guardarCliente(cliente));
     }
 
-    //listar clientes con el store procedure que puse en mi repo y mi servicio
     @GetMapping
     public ResponseEntity<List<clienteReporte>> listar(){
         return  ResponseEntity.ok(cServicio.listarClientes());
@@ -35,8 +33,6 @@ public class ClienteController {
         return ResponseEntity.ok(cServicio.listarOpciones());
     }
 
-
-    //obtener
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtener(@PathVariable Long id){
         return ResponseEntity.ok(cServicio.obtenerCliente(id)
@@ -47,8 +43,6 @@ public class ClienteController {
     public ResponseEntity<Cliente> editar(@PathVariable Long id, @RequestBody Cliente cliente){
         return ResponseEntity.ok(cServicio.editarCliente(id, cliente));
     }
-
-    //eliminar cliente
 
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> borrar(@PathVariable Long id){
